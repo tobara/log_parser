@@ -44,7 +44,6 @@ class LogParser
   end
 
   def parse_status(local_three)
-    @five_hundred = []
     local_three.each do |log|
       case
       when log.include?("status=4")
@@ -116,13 +115,12 @@ class LogParser
   def answer_one
     puts %(\n\n 1. List of URLs that were not found (404 error), including the
     number of times each URL was requested.\n\n\n)
-    n = 1
+
     puts %(\t\t\t|URL|\t\t\t\t\t\t|Number of Requests|\n\n)
     total_not_found = 0
     @not_found.each do |key, value|
       total_not_found += value
       puts %(\t#{key[0...60].ljust(60)}\t\t#{value})
-      n+= 1
     end
     puts %(\n\t-----------------------------------------------------------------
         TOTAL NUMBER OF REQUESTS ===> #{total_not_found}\n\n\n)
@@ -157,9 +155,10 @@ class LogParser
         number of times each error occured.\n\n)
     n = 0
     @error_codes.each do |k,v|
-      puts %(\t#{k} Error: #{"%02d" %v} Time(s) => #{@code_description[n]}\n)
+      puts %(\t#{k} Error: #{"%02d" %v} Time(s) => #{@code_description[n]}\n\n)
       n += 1
     end
+    puts %(Next log please.\n\n)
   end
 end
 
