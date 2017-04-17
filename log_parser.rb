@@ -22,7 +22,7 @@ class LogParser
 
     parse_facility(log_array)
 
-    print_answers
+    print_results
 
   end
 
@@ -104,16 +104,16 @@ class LogParser
     @error_codes.each_key { |k| @code_description << HerokuCodes::CODES[k] }
   end
 
-  def print_answers
-    answer_one
-    answer_two
-    answer_three
-    answer_four
-    answer_five
+  def print_results
+    print_not_found
+    print_serve_times
+    print_table_counts
+    print_redirection
+    print_error_codes
   end
 
-  def answer_one
-    puts %(\n\n 1. List of URLs that were not found (404 error), including the
+  def print_not_found
+    puts %(\n\n A List of URLs that were not found (404 error), including the
     number of times each URL was requested.\n\n\n)
 
     puts %(\t\t\t|URL|\t\t\t\t\t\t|Number of Requests|\n\n)
@@ -126,28 +126,28 @@ class LogParser
         TOTAL NUMBER OF REQUESTS ===> #{total_not_found}\n\n\n)
   end
 
-  def answer_two
+  def print_serve_times
     average_service_time = @service_time[:service] /  @service_time[:count]
-    puts %(2. Average time to serve a page.\n\n
+    puts %(Average time to serve a page.\n\n
         Average serve time per page is #{average_service_time} /ms based
         on #{@service_time[:count]} requests.\n\n\n)
   end
 
-  def answer_three
+  def print_table_counts
     table, count = @table_count.max_by { |table, count| count }
-    puts %(3.  Which database table is most frequently loaded?\n\n
+    puts %(Which database table is most frequently loaded?\n\n
         The "#{table}" table was loaded [accessed] #{count} times.\n
         To view a list of all tables and the total number of times they
         were loaded, please view LoadedTables-#@file_name\n\n\n)
   end
 
-  def answer_four
-    puts %(4. Is any URL redirection taking place?\n\n
+  def print_redirection
+    puts %(Is any URL redirection taking place?\n\n
         All URL redirects have been placed in Redirects-#@file_name\n\n\n)
   end
 
-  def answer_five
-    puts %(5. Are there any server errors? Ideas about possible causes?\n\n\n
+  def print_error_codes
+    puts %(Are there any server errors?\n\n\n
         All HTTP codes that resulted in 5xx have been placed in:\n
         5xxCodes-#@file_name\n\n
         Also, the following Heroku Server Error Codes that were discovered
